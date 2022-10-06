@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import PropTypes from "prop-types";
+import PropTypes, { array } from "prop-types";
 import { Tab } from "@ya.praktikum/react-developer-burger-ui-components";
 
 import styles from "./BurgerIngredients.module.css";
@@ -9,7 +9,7 @@ BurgerIngredients.propTypes = {
   items: PropTypes.arrayOf(typeIngridient).isRequired,
 };
 export default function BurgerIngredients({items}) {
-    console.log(items)
+
   const ingredientTypeTitles = {
     bun: "Булки",
     sauce: "Соусы",
@@ -17,27 +17,26 @@ export default function BurgerIngredients({items}) {
   };
 
   const [current, setCurrent] = useState("bun");
-  const sortItems = items.sort((a: any, b:  any) => {
+  const sortItems = items.sort((a, b) => {
     if (a.type === "bun" && b.type !== "bun") {
       return -1;
     } else if (a.type === "sauce" && b.type !== "sauce") {
       return -1;
     }
   });
-  const typesIngredient: any=new Object();
-
-  sortItems.forEach((item: any) => {
-    const { type } = item;
-    if (!typesIngredient[type]) {
-      typesIngredient[type] = [];
+  const typesIngredient = sortItems.reduce((acc, val) => {
+    // !acc[val.type]?acc[val.type]=[]:acc[val.type].push(val)
+    if(!acc[val.type]){
+      acc[val.type] = []
     }
-    typesIngredient[type].push(item);
-  });
+    acc[val.type].push(val)
+    return acc
+  },{})
   return (
     <div className="col">
       <div className="flex">
         {ingredientTypeTitles &&
-          Object.keys(ingredientTypeTitles).map((type:any) => (
+          Object.keys(ingredientTypeTitles).map((type) => (
             <Tab
               key={type}
               active={current === type}

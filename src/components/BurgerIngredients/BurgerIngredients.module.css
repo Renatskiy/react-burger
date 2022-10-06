@@ -1,16 +1,8 @@
-
-
-.burgerItem {
-    max-width: 272px;
-    position: relative;
-  }
-  
-  .burderItemPrice {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
-  
-  .burderItemPrice span {
-    margin-right: 9px;
-  }
+.burgerItems {
+  display: flex;
+  flex-wrap: wrap;
+  max-height: 756px;
+  overflow-y: scroll;
+  overflow-x: hidden;
+  padding-right: 7px;
+}
