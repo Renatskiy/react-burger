@@ -23,7 +23,7 @@ export const typeIngridient = PropTypes.shape({
   image: PropTypes.string,
   image_mobile: PropTypes.string,
   image_large: PropTypes.string,
-  __v: PropTypes.any,
+  __v: PropTypes.number,
 });
 export interface typeIngridientInt {
   _id: string;
@@ -37,5 +37,5 @@ export interface typeIngridientInt {
   image: string;
   image_mobile: string;
   image_large: string;
-  __v: any;
+  __v: number;
 }

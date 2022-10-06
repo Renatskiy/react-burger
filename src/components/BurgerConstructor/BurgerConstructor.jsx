@@ -21,11 +21,10 @@ class BurgerConstructor extends React.Component {
     }return name;
   };
 
-  const top = orders[0];
-  const bottom = orders[orders.length - 1];
-  const middleItems = orders.filter((x) => x._id !== top._id && x._id !== bottom._id);
+  const bun = orders.find(x => x.type === 'bun');
+  const middleItems = orders.filter((x) => x.type !== 'bun');
   const ar = [
-    top, ...middleItems, bottom
+    bun, ...middleItems, bun
   ]
   return (
     <div className="col">
