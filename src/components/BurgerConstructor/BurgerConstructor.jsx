@@ -4,14 +4,18 @@ import {ConstructorElement,DragIcon,CurrencyIcon,Button} from "@ya.praktikum/rea
 import styles from "./BurgerConstructor.module.css";
 import { typeOrder } from "../../types/types";
 
-BurgerConstructor.propTypes = {
-  orders: PropTypes.arrayOf(typeOrder).isRequired,
-};
 
-export default function BurgerConstructor({ orders }) {
-  const totalPrice = orders.reduce((acc, val) => acc + val.price, 0);
 
-  const handlerName = (name, type) => {
+class BurgerConstructor extends React.Component {
+  constructor(props){
+    super(props)
+  }
+
+  render(){
+    const {orders} = this.props
+    const totalPrice = orders.reduce((acc, val) => acc + val.price, 0);
+
+  const getName = (name, type) => {
     if (type) {
       return type === 'top' ? `${name} (верх)` : `${name} (низ)`;
     }return name;
@@ -25,27 +29,27 @@ export default function BurgerConstructor({ orders }) {
   ]
   return (
     <div className="col">
-      <div className={styles.burgerCards}>
-        <div className={styles.BurgerConstructorsWrapper}>
+      <div className={styles.burger_cards}>
+        <div className={styles.constructor_wrapper}>
           <div
-            className={`${styles.burgerWrapper} pr-2 customScroll`}
+            className={`${styles.burger_wrapper} pr-2 customScroll`}
           >
             {ar &&
               ar.map((item, index) => {
                 return (
                   <div
-                    className={styles.burgerCard}
+                    className={styles.burger_card}
                     key={`${item._id}_${index}`}
                   >
                     {item.type!=='bun' ?
-                    (<div className={styles.burderCardIcon}>
+                    (<div className={styles.icon}>
                       <DragIcon type="primary" />
                     </div>):<></>
                     }
                     <ConstructorElement
                       type={item.position}
                       isLocked={item.locker}
-                      text={handlerName(item.name, item.position)}
+                      text={getName(item.name, item.position)}
                       price={item.price}
                       thumbnail={item.image}
                     />
@@ -55,7 +59,7 @@ export default function BurgerConstructor({ orders }) {
           </div>
         </div>
       </div>
-      <div className={`${styles.burgerTotalPrice} mt-10 mr-4`}>
+      <div className={`${styles.total_price} mt-10 mr-4`}>
         <div className={`${styles.price} text text_type_digits-medium mr-10`}>
           <span>{totalPrice}</span>
           <CurrencyIcon type="primary" />
@@ -68,4 +72,10 @@ export default function BurgerConstructor({ orders }) {
       </div>
     </div>
   );
+  }
 }
+BurgerConstructor.propTypes = {
+  orders: PropTypes.arrayOf(typeOrder).isRequired,
+};
+
+export default BurgerConstructor

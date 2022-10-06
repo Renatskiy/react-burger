@@ -1,14 +1,14 @@
-.burgerItem {
+.burger_item {
   max-width: 272px;
   position: relative;
 }
 
-.burderItemPrice {
+.burger_price {
   display: flex;
   align-items: center;
   justify-content: center;
 }
 
-.burderItemPrice span {
+.burger_price span {
   margin-right: 9px;
 }
