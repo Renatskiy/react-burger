@@ -10,7 +10,7 @@ export default class BurgerIngredients extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
-      current: 'bun'
+      current: 'bun',
     };
   }
   render(){
@@ -21,7 +21,9 @@ export default class BurgerIngredients extends React.Component {
       main: "Начинки",
     };
 
-    const setCurrent = (val) => this.setState({current: val})
+    const setCurrent = (val) => {
+      this.setState({current: val})
+    }
 
     const sortItems = items.sort((a, b) => {
       if (a.type === "bun" && b.type !== "bun") {
@@ -45,8 +47,8 @@ export default class BurgerIngredients extends React.Component {
             Object.keys(ingredientTypeTitles).map((type) => (
               <Tab
                 key={type}
-                active={this.state.current === type}
                 onClick={setCurrent}
+                active={this.state.current === type}
                 value={type}
               >
                 {ingredientTypeTitles[type]}
@@ -55,13 +57,13 @@ export default class BurgerIngredients extends React.Component {
         </div>
         <div className={`${styles.items} customScroll`}>
           {typesIngredient &&
-            Object.keys(typesIngredient).map((ingredient, index) => 
-            ingredient === this.state.current?( 
+            Object.keys(typesIngredient).map((ingredient, index) =>( 
               <BurgerIngredientsSection
                 key={`${ingredient}${index}`}
                 title={ingredientTypeTitles[ingredient]}
                 ingredients={typesIngredient[ingredient]}
-              />):<p key={`${ingredient}${index}`}></p>)}
+              />))
+          }
         </div>
       </div>
     );

@@ -8,8 +8,8 @@ export default class BurgerIngredientSection extends React.Component {
   render(){
     const{title, ingredients} = this.props
     return (
-      <div className={`${styles.ingredient_block} mt-10`}>
-        <div className="title text text_type_main-medium mb-6">{title}</div>
+      <div className={`${styles.ingredient_block} mt-10` }>
+        <div className="title text text_type_main-medium mb-6">{title }</div>
         {ingredients &&
           ingredients.map((ingredient, idx) => (
             <BurgerIngredient
