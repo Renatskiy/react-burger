@@ -1,3 +1,5 @@
+import { string } from 'prop-types';
+import PropTypes from "prop-types";
 import React from 'react'
 import styles from "./AppMenuItem.module.css";
 
@@ -19,5 +21,9 @@ class AppMenuItem extends React.Component {
       );
     }
 }
+AppMenuItem.propTypes = {
+  title: string.isRequired,
+
+};
 
 export default AppMenuItem

@@ -6,9 +6,7 @@ import {
 import AppMenuItem from '../AppMenuItem/AppMenuItem'
 
 export default class AppHeader extends React.Component {
-    constructor(props) {
-        super(props);
-    }
+    
     render() {
       return (
           <header className={`${styles.header} pt-4 pb-4`}>

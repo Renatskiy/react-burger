@@ -40,7 +40,7 @@ class BurgerIngredient extends React.Component {
 }
 
 BurgerIngredient.propTypes = {
-  ingredient: typeIngridient,
+  ingredient: typeIngridient.isRequired
 };
 
 export default  BurgerIngredient

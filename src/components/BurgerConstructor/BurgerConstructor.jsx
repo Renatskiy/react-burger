@@ -24,12 +24,21 @@ class BurgerConstructor extends React.Component {
   const bun = orders.find(x => x.type === 'bun');
   const middleItems = orders.filter((x) => x.type !== 'bun');
   const ar = [
-    bun, ...middleItems, bun
+   ...middleItems
   ]
   return (
     <div className="col">
-      <div className={styles.burger_cards}>
-        <div className={styles.constructor_wrapper}>
+        <div className={styles.burger_cards}>
+          <div className={styles.constructor_wrapper}>     
+            <div className={`${styles.burger_card} pr-4`}>
+              <ConstructorElement
+                type="top"
+                isLocked={bun.locker}
+                text={getName(bun.name, "top")}
+                price={bun.price}
+                thumbnail={bun.image}
+              />
+          </div>
           <div
             className={`${styles.burger_wrapper} pr-2 customScroll`}
           >
@@ -55,6 +64,17 @@ class BurgerConstructor extends React.Component {
                   </div>
                 );
               })}
+          </div>
+          <div className={styles.constructor_wrapper}>     
+          <div className={`${styles.burger_card} pr-4`}>
+              <ConstructorElement
+                type="bottom"
+                isLocked={bun.locker}
+                text={getName(bun.name, "bottom")}
+                price={bun.price}
+                thumbnail={bun.image}
+              />
+            </div>
           </div>
         </div>
       </div>

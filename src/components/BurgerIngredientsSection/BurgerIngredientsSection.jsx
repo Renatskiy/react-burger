@@ -1,6 +1,8 @@
 import React from "react";
+import PropTypes from "prop-types";
 import BurgerIngredient from "../BurgerIngredient/BurgerIngredient";
 import styles from "./BurgerIngredientsSection.module.css";
+import {typeIngridient} from '../../types/types'
 export default class BurgerIngredientSection extends React.Component {
   constructor(props){
     super(props)
@@ -20,4 +22,7 @@ export default class BurgerIngredientSection extends React.Component {
       </div>
     );
   }
+}
+BurgerIngredientSection.propTypes = {
+  ingredients: PropTypes.arrayOf(typeIngridient).isRequired
 }

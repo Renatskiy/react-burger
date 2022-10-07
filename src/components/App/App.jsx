@@ -1,6 +1,5 @@
 import React from 'react';
 import AppHeader from '../AppHeader/AppHeader'
-import Footer from '../../footer'
 import Main from '../Main/Main'
 import { mockOrder } from "../../lib/mock-order";
 import { mockData } from "../../lib/mock-data";

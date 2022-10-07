@@ -1,5 +1,4 @@
 import React from "react";
-import PropTypes from "prop-types";
 import BurgerIngredients from "../BurgerIngredients/BurgerIngredients";
 import BurgerConstructor from "../BurgerConstructor/BurgerConstructor";
 export default class Main extends React.Component {
