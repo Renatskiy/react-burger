@@ -23,7 +23,7 @@ class AppMenuItem extends React.Component {
 }
 AppMenuItem.propTypes = {
   title: string.isRequired,
-
+  Icon: PropTypes.elementType.isRequired
 };
 
 export default AppMenuItem

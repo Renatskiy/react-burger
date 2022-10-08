@@ -84,7 +84,7 @@ class BurgerConstructor extends React.Component {
           <CurrencyIcon type="primary" />
         </div>
         <div className="button">
-          <Button type="primary" size="medium">
+          <Button type="primary" size="medium" htmlType="button">
             <p>Оформить заказ</p>
           </Button>
         </div>
