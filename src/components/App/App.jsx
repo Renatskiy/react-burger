@@ -1,6 +1,6 @@
-import React from 'react';
-import AppHeader from '../AppHeader/AppHeader'
-import Main from '../Main/Main'
+import React from "react";
+import AppHeader from "../AppHeader/AppHeader";
+import Main from "../Main/Main";
 import { mockOrder } from "../../lib/mock-order";
 import { mockData } from "../../lib/mock-data";
 
@@ -12,4 +12,3 @@ export default function App() {
     </div>
   );
 }
-

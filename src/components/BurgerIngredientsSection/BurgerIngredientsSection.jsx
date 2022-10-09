@@ -2,16 +2,16 @@ import React from "react";
 import PropTypes from "prop-types";
 import BurgerIngredient from "../BurgerIngredient/BurgerIngredient";
 import styles from "./BurgerIngredientsSection.module.css";
-import {typeIngridient} from '../../types/types'
-export default class BurgerIngredientSection extends React.Component {
-  constructor(props){
-    super(props)
+import { typeIngridient } from "../../types/types";
+export default class BurgerIngredientsSection extends React.Component {
+  constructor(props) {
+    super(props);
   }
-  render(){
-    const{title, ingredients} = this.props
+  render() {
+    const { title, ingredients, id } = this.props;
     return (
-      <div className={`${styles.ingredient_block} mt-10` }>
-        <div className="title text text_type_main-medium mb-6">{title }</div>
+      <div className={`${styles.ingredient_block} mt-10`} id={id}>
+        <div className="title text text_type_main-medium mb-6">{title}</div>
         {ingredients &&
           ingredients.map((ingredient, idx) => (
             <BurgerIngredient
@@ -23,7 +23,8 @@ export default class BurgerIngredientSection extends React.Component {
     );
   }
 }
-BurgerIngredientSection.propTypes = {
+BurgerIngredientsSection.propTypes = {
   ingredients: PropTypes.arrayOf(typeIngridient).isRequired,
-  title: PropTypes.string.isRequired
-}
+  title: PropTypes.string.isRequired,
+  id: PropTypes.string,
+};
