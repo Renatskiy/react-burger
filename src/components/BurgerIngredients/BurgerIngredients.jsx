@@ -24,9 +24,10 @@ export default function BurgerIngredients({ items }) {
     if (element) element.scrollIntoView({ behavior: "smooth" });
   };
 
-  const bunArray = items.filter((item) => item.type === "bun");
-  const mainArray = items.filter((item) => item.type === "main");
-  const sauceArray = items.filter((item) => item.type === "sauce");
+  const buns = useMemo(() => items.filter((item) => item.type === 'bun'), [items]);  
+  const mains = useMemo(() => items.filter((item) => item.type === 'main'), [items]);  
+  const sauces = useMemo(() => items.filter((item) => item.type === 'sauce'), [items]);  
+
 
   return (
     <div className="col">
@@ -44,25 +45,25 @@ export default function BurgerIngredients({ items }) {
           ))}
       </div>
       <div className={`${styles.items} customScroll`}>
-        {bunArray && (
+        {buns && (
           <BurgerIngredientsSection
             id="bun"
             title="Булки"
-            ingredients={bunArray}
+            ingredients={buns}
           />
         )}
-        {mainArray && (
+        {mains && (
           <BurgerIngredientsSection
             id="main"
             title="Булки"
-            ingredients={mainArray}
+            ingredients={mains}
           />
         )}
-        {sauceArray && (
+        {sauces && (
           <BurgerIngredientsSection
             id="sauce"
             title="Булки"
-            ingredients={sauceArray}
+            ingredients={sauces}
           />
         )}
       </div>
