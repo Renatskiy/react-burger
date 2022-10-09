@@ -26,5 +26,5 @@ export default class BurgerIngredientsSection extends React.Component {
 BurgerIngredientsSection.propTypes = {
   ingredients: PropTypes.arrayOf(typeIngridient).isRequired,
   title: PropTypes.string.isRequired,
-  id: PropTypes.string,
+  id: PropTypes.string.isRequired,
 };
