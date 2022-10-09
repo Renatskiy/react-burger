@@ -55,14 +55,14 @@ export default function BurgerIngredients({ items }) {
         {mains && (
           <BurgerIngredientsSection
             id="main"
-            title="Булки"
+            title="Начинки"
             ingredients={mains}
           />
         )}
         {sauces && (
           <BurgerIngredientsSection
             id="sauce"
-            title="Булки"
+            title="Соусы"
             ingredients={sauces}
           />
         )}
