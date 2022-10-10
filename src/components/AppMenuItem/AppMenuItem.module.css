@@ -1,0 +1,23 @@
+.app_menu_item {
+  display: flex;
+  align-items: center;
+  z-index: 2;
+  color: #fff;
+  text-decoration: none;
+}
+.app_menu_item span {
+  cursor: pointer;
+  display: inline-block;
+}
+.app_menu_item:hover svg {
+  fill: #8585ad;
+}
+.app_menu_item_icon {
+  max-height: 24px;
+}
+.app_menu_item span:hover {
+  color: #8585ad;
+}
+.menu_list {
+  list-style-type: none;
+}
