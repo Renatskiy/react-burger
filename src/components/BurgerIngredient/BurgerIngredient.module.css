@@ -1,6 +1,7 @@
 .burger_item {
   max-width: 272px;
   position: relative;
+  cursor: pointer;
 }
 
 .burger_price {

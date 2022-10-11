@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import PropTypes from "prop-types";
 import {
   ConstructorElement,
@@ -7,38 +7,44 @@ import {
   Button,
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import styles from "./BurgerConstructor.module.css";
+import Modal from "../Modal/Modal";
+import OrderDetails from "../OrderDetails/OrderDetails";
 import { typeOrder } from "../../types/types";
 
-class BurgerConstructor extends React.Component {
-  constructor(props) {
-    super(props);
-  }
+BurgerConstructor.propTypes = {
+  orders: PropTypes.arrayOf(typeOrder).isRequired,
+};
 
-  render() {
-    const { orders } = this.props;
-    const totalPrice = orders.reduce((acc, val) => acc + val.price, 0);
+export default function BurgerConstructor({ orders }) {
+  const totalPrice = orders.reduce((acc, val) => acc + val.price, 0);
+  const bun = orders.find((x) => x.type === "bun");
+  const middleItems = orders.filter((x) => x.type !== "bun");
 
-    const getName = (name, type) => {
-      if (type) {
-        return type === "top" ? `${name} (верх)` : `${name} (низ)`;
-      }
-      return name;
-    };
+  const [orderNumber, setOrderNumber] = useState(0);
+  const [show, setShow] = useState(false);
 
-    const bun = orders.find((x) => x.type === "bun");
-    const middleItems = orders.filter((x) => x.type !== "bun");
-    return (
+  const openModal = (e) => {
+    //Эмулируем запросы, якобы получаем данные и сохраняем номер заказа
+    setTimeout(() => {
+      setOrderNumber(orderNumber + 3);
+      setShow(true);
+    }, 500);
+  };
+  return (
+    <>
       <div className="col">
         <div className={styles.burger_cards}>
           <div className={styles.constructor_wrapper}>
             <div className={`${styles.burger_card} pr-4`}>
-              <ConstructorElement
-                type="top"
-                isLocked={bun.locker}
-                text={bun.name + " (верх)"}
-                price={bun.price}
-                thumbnail={bun.image}
-              />
+              {bun && (
+                <ConstructorElement
+                  type="top"
+                  isLocked={bun.locker}
+                  text={bun.name + " (верх)"}
+                  price={bun.price}
+                  thumbnail={bun.image}
+                />
+              )}
             </div>
             <div className={`${styles.burger_wrapper} pr-2 customScroll`}>
               {middleItems &&
@@ -64,13 +70,15 @@ class BurgerConstructor extends React.Component {
             </div>
             <div className={styles.constructor_wrapper}>
               <div className={`${styles.burger_card} pr-4`}>
-                <ConstructorElement
-                  type="bottom"
-                  isLocked={bun.locker}
-                  text={bun.name + " (низ)"}
-                  price={bun.price}
-                  thumbnail={bun.image}
-                />
+                {bun && (
+                  <ConstructorElement
+                    type="bottom"
+                    isLocked={bun.locker}
+                    text={bun.name + " (низ)"}
+                    price={bun.price}
+                    thumbnail={bun.image}
+                  />
+                )}
               </div>
             </div>
           </div>
@@ -81,17 +89,20 @@ class BurgerConstructor extends React.Component {
             <CurrencyIcon type="primary" />
           </div>
           <div className="button">
-            <Button type="primary" size="medium" htmlType="button">
+            <Button
+              type="primary"
+              size="medium"
+              htmlType="button"
+              onClick={openModal}
+            >
               <p>Оформить заказ</p>
             </Button>
           </div>
         </div>
       </div>
-    );
-  }
+      <Modal show={show} onClose={() => setShow(false)}>
+        <OrderDetails item={orderNumber} />
+      </Modal>
+    </>
+  );
 }
-BurgerConstructor.propTypes = {
-  orders: PropTypes.arrayOf(typeOrder).isRequired,
-};
-
-export default BurgerConstructor;

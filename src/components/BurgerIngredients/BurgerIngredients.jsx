@@ -1,4 +1,4 @@
-import React, { useState, useMemo, useEffect } from "react";
+import React, { useState, useMemo } from "react";
 import PropTypes from "prop-types";
 import { Tab } from "@ya.praktikum/react-developer-burger-ui-components";
 
@@ -24,10 +24,18 @@ export default function BurgerIngredients({ items }) {
     if (element) element.scrollIntoView({ behavior: "smooth" });
   };
 
-  const buns = useMemo(() => items.filter((item) => item.type === 'bun'), [items]);  
-  const mains = useMemo(() => items.filter((item) => item.type === 'main'), [items]);  
-  const sauces = useMemo(() => items.filter((item) => item.type === 'sauce'), [items]);  
-
+  const buns = useMemo(
+    () => items.filter((item) => item.type === "bun"),
+    [items]
+  );
+  const mains = useMemo(
+    () => items.filter((item) => item.type === "main"),
+    [items]
+  );
+  const sauces = useMemo(
+    () => items.filter((item) => item.type === "sauce"),
+    [items]
+  );
 
   return (
     <div className="col">
@@ -46,11 +54,7 @@ export default function BurgerIngredients({ items }) {
       </div>
       <div className={`${styles.items} customScroll`}>
         {buns && (
-          <BurgerIngredientsSection
-            id="bun"
-            title="Булки"
-            ingredients={buns}
-          />
+          <BurgerIngredientsSection id="bun" title="Булки" ingredients={buns} />
         )}
         {mains && (
           <BurgerIngredientsSection
