@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import PropTypes, { func } from "prop-types";
+import PropTypes from "prop-types";
 import {
   Counter,
   CurrencyIcon,
@@ -17,6 +17,10 @@ export default function BurgerIngredient({ ingredient }) {
 
   const activeModal = (e) => {
     setShow(true);
+  };
+
+  const closeModal = () => {
+    setShow(false);
   };
   return (
     <>
@@ -41,9 +45,11 @@ export default function BurgerIngredient({ ingredient }) {
           </div>
         </div>
       </div>
-      <Modal show={show} onClose={() => setShow(false)}>
-        <IngredientDetails item={ingredient} />
-      </Modal>
+      {show && (
+        <Modal show={show} onClose={closeModal}>
+          <IngredientDetails item={ingredient} />
+        </Modal>
+      )}
     </>
   );
 }

@@ -10,18 +10,13 @@ import { ingredientType } from "../../types/types";
 export default function App() {
   const [data, setData] = useState([]);
   const [error, setError] = useState(false);
-  const dataRequest = useCallback(async () => {
-    const res = await fetchRequest("/ingredients");
-    if (res && res.data) {
-      setData([...data, ...res.data]);
-    } else {
-      setError(true);
-    }
-  }, []);
-
+  const [loaded, setIngredientsLoading] = useState(true);
   useEffect(() => {
-    dataRequest();
-  }, [dataRequest]);
+    fetchRequest("/ingredients")
+      .then((data) => setData(data.data))
+      .catch(() => alert("Во время загрузки ингредиентов произошла ошибка."))
+      .finally(() => setIngredientsLoading(false));
+  }, []);
 
   return (
     <div className="App">

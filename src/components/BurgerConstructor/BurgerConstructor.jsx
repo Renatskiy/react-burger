@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useMemo } from "react";
 import PropTypes from "prop-types";
 import {
   ConstructorElement,
@@ -16,9 +16,15 @@ BurgerConstructor.propTypes = {
 };
 
 export default function BurgerConstructor({ orders }) {
-  const totalPrice = orders.reduce((acc, val) => acc + val.price, 0);
-  const bun = orders.find((x) => x.type === "bun");
-  const middleItems = orders.filter((x) => x.type !== "bun");
+  const totalPrice = useMemo(
+    () => orders.reduce((acc, val) => acc + val.price, 0),
+    [orders]
+  );
+  const bun = useMemo(() => orders.find((x) => x.type === "bun"), [orders]);
+  const middleItems = useMemo(
+    () => orders.filter((x) => x.type !== "bun"),
+    [orders]
+  );
 
   const [orderNumber, setOrderNumber] = useState(0);
   const [show, setShow] = useState(false);
@@ -29,6 +35,10 @@ export default function BurgerConstructor({ orders }) {
       setOrderNumber(orderNumber + 3);
       setShow(true);
     }, 500);
+  };
+
+  const closeModal = () => {
+    setShow(false);
   };
   return (
     <>
@@ -100,9 +110,11 @@ export default function BurgerConstructor({ orders }) {
           </div>
         </div>
       </div>
-      <Modal show={show} onClose={() => setShow(false)}>
-        <OrderDetails item={orderNumber} />
-      </Modal>
+      {show && (
+        <Modal show={show} onClose={closeModal}>
+          <OrderDetails item={orderNumber} />
+        </Modal>
+      )}
     </>
   );
 }

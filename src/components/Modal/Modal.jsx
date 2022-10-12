@@ -5,67 +5,43 @@ import { CloseIcon } from "@ya.praktikum/react-developer-burger-ui-components";
 import ModalOverlay from "./ModalOverlay";
 import { useHiddenScrollBody } from "../../hooks/useHiddenScrollBody";
 import styles from "./modal.module.css";
+const ECK_KEYCODE = 27;
 Modal.propTypes = {
   show: PropTypes.bool.isRequired,
   children: PropTypes.node.isRequired,
   onClose: PropTypes.func.isRequired,
 };
-function Modal({ show, children, onClose }) {
-  const overlayRef = useRef(null);
-  useHiddenScrollBody(show);
-  const closeOnEsc = (e) => {
-    if ((e.charCode || e.keyCode) === 27) {
-      onClose();
-    }
-  };
 
-  const onOutside = (event) => {
-    if (
-      show &&
-      overlayRef.current &&
-      !overlayRef.current.contains(event.target)
-    ) {
-      onClose();
-    }
-  };
+function Modal({ show, children, onClose }) {
+  useHiddenScrollBody(show);
 
   useEffect(() => {
+    const closeOnEsc = (e) => {
+      if ((e.charCode || e.keyCode) === ECK_KEYCODE) {
+        onClose();
+      }
+    };
     document.body.addEventListener("keydown", closeOnEsc);
-    return () => {
+    return (e) => {
       document.body.removeEventListener("keydown", closeOnEsc);
     };
   }, []);
 
-  useEffect(() => {
-    document.addEventListener("mousedown", onOutside);
-    document.addEventListener("touchstart", onOutside);
-    return () => {
-      document.removeEventListener("mousedown", onOutside);
-      document.removeEventListener("touchstart", onOutside);
-    };
-  }, [show, overlayRef]);
-
-  return (
-    show &&
-    ReactDOM.createPortal(
-      <div className="modalTarget">
-        <ModalOverlay />
-        <div
-          ref={overlayRef}
-          className={`${styles.modal} pt-15 pb-15 pr-10 pl-10`}
+  return ReactDOM.createPortal(
+    <>
+      <div className={`${styles.modal} pt-15 pb-15 pr-10 pl-10`}>
+        <button
+          type="button"
+          className={styles.modalCloseButton}
+          onClick={onClose}
         >
-          <button
-            type="button"
-            className={styles.modalCloseButton}
-            onClick={onClose}
-          >
-            <CloseIcon type="primary" />
-          </button>
-          {children}
-        </div>
-      </div>,
-      document.getElementById("modals")
-    )
+          <CloseIcon type="primary" />
+        </button>
+        {children}
+      </div>
+      <ModalOverlay onClose={onClose} />
+    </>,
+    document.getElementById("modals")
   );
 }
 
