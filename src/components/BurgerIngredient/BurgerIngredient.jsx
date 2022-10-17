@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import PropTypes from "prop-types";
 import {
   Counter,
@@ -6,16 +6,25 @@ import {
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import { typeIngridient } from "../../types/types";
 import styles from "./BurgerIngredient.module.css";
+import IngredientDetails from "../IngredientDetails/IngredientDetails";
+import Modal from "../Modal/Modal";
 
-class BurgerIngredient extends React.Component {
-  constructor(props) {
-    super(props);
-  }
+BurgerIngredient.propTypes = {
+  ingredient: typeIngridient.isRequired,
+};
+export default function BurgerIngredient({ ingredient }) {
+  const [show, setShow] = useState(false);
 
-  render() {
-    const { ingredient } = this.props;
-    return (
-      <div className={`${styles.burger_item} mb-8`}>
+  const activeModal = (e) => {
+    setShow(true);
+  };
+
+  const closeModal = () => {
+    setShow(false);
+  };
+  return (
+    <>
+      <div className={`${styles.burger_item} mb-8`} onClick={activeModal}>
         <div className="pl-4 pr-4">
           {ingredient.count > 0 && (
             <Counter
@@ -36,12 +45,11 @@ class BurgerIngredient extends React.Component {
           </div>
         </div>
       </div>
-    );
-  }
+      {show && (
+        <Modal show={show} onClose={closeModal}>
+          <IngredientDetails item={ingredient} />
+        </Modal>
+      )}
+    </>
+  );
 }
-
-BurgerIngredient.propTypes = {
-  ingredient: typeIngridient.isRequired,
-};
-
-export default BurgerIngredient;
