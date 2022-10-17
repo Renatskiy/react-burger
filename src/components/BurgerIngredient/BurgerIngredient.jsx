@@ -1,10 +1,11 @@
-import React, { useState } from "react";
+import React, { useContext } from "react";
 import PropTypes from "prop-types";
 import {
   Counter,
   CurrencyIcon,
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import { typeIngridient } from "../../types/types";
+import { AppContext } from "../../services/appContext";
 import styles from "./BurgerIngredient.module.css";
 import IngredientDetails from "../IngredientDetails/IngredientDetails";
 import Modal from "../Modal/Modal";
@@ -13,18 +14,19 @@ BurgerIngredient.propTypes = {
   ingredient: typeIngridient.isRequired,
 };
 export default function BurgerIngredient({ ingredient }) {
-  const [show, setShow] = useState(false);
+  const { dispatch } = useContext(AppContext);
 
-  const activeModal = (e) => {
-    setShow(true);
+  const openModal = () => {
+    dispatch({ type: "setIngredientSelect", payload: ingredient });
+    dispatch({
+      type: "openModal",
+      payload: { modalIsOpen: true, mode: "IngredientDetails" },
+    });
   };
 
-  const closeModal = () => {
-    setShow(false);
-  };
   return (
     <>
-      <div className={`${styles.burger_item} mb-8`} onClick={activeModal}>
+      <div className={`${styles.burger_item} mb-8`} onClick={openModal}>
         <div className="pl-4 pr-4">
           {ingredient.count > 0 && (
             <Counter
@@ -45,11 +47,6 @@ export default function BurgerIngredient({ ingredient }) {
           </div>
         </div>
       </div>
-      {show && (
-        <Modal show={show} onClose={closeModal}>
-          <IngredientDetails item={ingredient} />
-        </Modal>
-      )}
     </>
   );
 }

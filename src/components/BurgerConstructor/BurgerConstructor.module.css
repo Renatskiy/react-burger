@@ -1,35 +1,35 @@
-.burger_cards {
+.burgerCards {
   margin-top: 56px;
 }
 
-.constructor_wrapper {
+.BurgerConstructorsWrapper {
   max-height: 656px;
 }
 
-.burger_wrapper {
+.burgerWrapper {
   max-height: 464px;
   overflow: hidden;
-  overflow-y: scroll;
+  overflow-y: auto;
   padding-bottom: 16px;
 }
 
-.burger_card {
+.burgerCard {
   display: flex;
   align-items: center;
   justify-content: flex-end;
 }
-.burger_wrapper .burger_card:last-child .constructor-element {
+.burgerWrapper .burgerCard:last-child .constructor-element {
   margin-bottom: 0;
 }
 
-.burger_wrapper .burger_card:last-child {
+.burgerWrapper .burgerCard:last-child {
   margin-bottom: -16px;
 }
-.icon {
+.burderCardIcon {
   margin-right: 8px;
 }
 
-.total_price {
+.burgerTotalPrice {
   display: flex;
   align-items: center;
   justify-content: flex-end;
@@ -37,4 +37,8 @@
 
 .price span {
   margin-right: 9.5px;
+}
+.button_wrapper button {
+  min-width: 214px;
+  max-height: 65px;
 }
