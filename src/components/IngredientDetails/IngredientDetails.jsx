@@ -1,11 +1,30 @@
-import React from "react";
-import PropTypes from "prop-types";
+import React, {useContext} from "react";
+import { AppContext } from "../../services/appContext";
+import { Button } from "@ya.praktikum/react-developer-burger-ui-components";
 import styles from "../Modal/modal.module.css";
 import { typeIngridient } from "../../types/types";
 IngredientDetails.propTypes = {
   item: typeIngridient.isRequired,
 };
 export default function IngredientDetails({ item }) {
+  const { state, dispatch } = useContext(AppContext);
+  const { modalMode, burgerConstructor } = state;
+
+  const addItem = () => {
+    item.count = item.count + 1;
+    if (item.type === "bun") {
+      dispatch({ type: "setBun", payload: item });
+    } else {
+      dispatch({ type: "setIngredient", payload: item });
+    }
+    dispatch({ type: "closeModal" });
+  };
+
+  const hasBunAdd =
+    modalMode === "IngredientDetails" &&
+    item.type === "bun" &&
+    burgerConstructor.bun.length > 0;
+
   return (
     <div className={`${styles.modalContent} ${styles.modalContentIngredient}`}>
       <div className="modalHeader text text_type_main-large">
@@ -37,6 +56,15 @@ export default function IngredientDetails({ item }) {
             <span className="text text_type_main-default">Углеводы, г</span>
             <div className={styles.value}>{item.carbohydrates}</div>
           </div>
+        </div>
+        <div className={styles.modalContentBottom}>
+          {hasBunAdd ? (
+            <p>Вы уже добавили булку</p>
+          ) : (
+            <Button htmlType="button" type="primary" size="medium" onClick={addItem}>
+              Добавить
+            </Button>
+          )}
         </div>
       </div>
     </div>

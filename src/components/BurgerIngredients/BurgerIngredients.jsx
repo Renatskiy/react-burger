@@ -1,16 +1,14 @@
-import React, { useState, useMemo } from "react";
-import PropTypes from "prop-types";
+import React, { useState, useMemo, useContext } from "react";
+import { AppContext } from "../../services/appContext";
 import { Tab } from "@ya.praktikum/react-developer-burger-ui-components";
 
 import styles from "./BurgerIngredients.module.css";
 import BurgerIngredientsSection from "../BurgerIngredientsSection/BurgerIngredientsSection";
-import { typeIngridient } from "../../types/types";
-
-BurgerIngredients.propTypes = {
-  items: PropTypes.arrayOf(typeIngridient).isRequired,
-};
 
 export default function BurgerIngredients({ items }) {
+  
+  const { state } = useContext(AppContext);
+  const { ingredients } = state;
   const ingredientTypeTitles = {
     bun: "Булки",
     sauce: "Соусы",
@@ -25,16 +23,16 @@ export default function BurgerIngredients({ items }) {
   };
 
   const buns = useMemo(
-    () => items.filter((item) => item.type === "bun"),
-    [items]
+    () => ingredients.filter((item) => item.type === "bun"),
+    [ingredients]
   );
   const mains = useMemo(
-    () => items.filter((item) => item.type === "main"),
-    [items]
+    () => ingredients.filter((item) => item.type === "main"),
+    [ingredients]
   );
   const sauces = useMemo(
-    () => items.filter((item) => item.type === "sauce"),
-    [items]
+    () => ingredients.filter((item) => item.type === "sauce"),
+    [ingredients]
   );
 
   return (

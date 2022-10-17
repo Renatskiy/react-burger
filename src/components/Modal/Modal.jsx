@@ -27,7 +27,7 @@ function Modal({ show, children, onClose }) {
     };
   }, []);
 
-  return ReactDOM.createPortal(
+  return show && ReactDOM.createPortal(
     <>
       <div className={`${styles.modal} pt-15 pb-15 pr-10 pl-10`}>
         <button
