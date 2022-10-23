@@ -18,7 +18,7 @@ function BurgerConstructorItem({
         const didDrop = monitor.didDrop();
         const { index: droppedIndex } = findIngredient(id);
         if (!didDrop) {
-          sortIngredient(ingredientsIndex, droppedIndex);
+          return sortIngredient(ingredientsIndex, droppedIndex);
         }
       },
     }),
@@ -28,12 +28,12 @@ function BurgerConstructorItem({
   const [, drop] = useDrop(
     () => ({
       accept: "ingredients-sort",
-      canDrop: () => false,
+      canDrop: () => true,
       hover({ id: itemId }) {
-        if (itemId !== id) {
-          const { index: oldIndex } = findIngredient(id);
-          const { index: itemIndex } = findIngredient(itemId);
-          sortIngredient(itemIndex, oldIndex);
+        const { index: oldIndex } = findIngredient(id);
+        const { index: itemIndex } = findIngredient(itemId);
+        if (itemId !== id && oldIndex !== itemIndex) {
+          return sortIngredient(itemIndex, oldIndex);
         }
       },
     }),
