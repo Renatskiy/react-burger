@@ -1,39 +1,67 @@
-import React, { useState, useMemo, useContext } from "react";
-import { AppContext } from "../../services/appContext";
+import React, { useState, useRef } from "react";
+import { useSelector } from "react-redux";
 import { Tab } from "@ya.praktikum/react-developer-burger-ui-components";
-
 import styles from "./BurgerIngredients.module.css";
-import BurgerIngredientsSection from "../BurgerIngredientsSection/BurgerIngredientsSection";
+import BurgerIngredientSection from "../BurgerIngredientSection/BurgerIngredientSection";
 
-export default function BurgerIngredients({ items }) {
-  
-  const { state } = useContext(AppContext);
-  const { ingredients } = state;
+function BurgerIngredients() {
+  const { ingredients } = useSelector((state) => state.ingredientsState);
   const ingredientTypeTitles = {
     bun: "Булки",
     sauce: "Соусы",
     main: "Начинки",
   };
-  const [current, setCurrent] = useState("bun");
 
+  const scrollRef = useRef(null);
+  const bunsRef = useRef(null);
+  const saucesRef = useRef(null);
+  const mainsRef = useRef(null);
+
+  const [current, setCurrent] = useState("bun");
+  const sortItems = ingredients.sort((a, b) => {
+    if (a.type === "bun" && b.type !== "bun") {
+      return -1;
+    } else if (a.type === "sauce" && b.type !== "sauce") {
+      return -1;
+    } else {
+      return 0;
+    }
+  });
   const setTab = (val) => {
     setCurrent(val);
     const element = document.getElementById(val);
     if (element) element.scrollIntoView({ behavior: "smooth" });
   };
 
-  const buns = useMemo(
-    () => ingredients.filter((item) => item.type === "bun"),
-    [ingredients]
-  );
-  const mains = useMemo(
-    () => ingredients.filter((item) => item.type === "main"),
-    [ingredients]
-  );
-  const sauces = useMemo(
-    () => ingredients.filter((item) => item.type === "sauce"),
-    [ingredients]
-  );
+  const typesIngredient = {};
+
+  sortItems.forEach((item) => {
+    const { type } = item;
+    if (!typesIngredient[type]) {
+      typesIngredient[type] = [];
+    }
+    typesIngredient[type].push(item);
+  });
+
+  const handleScroll = () => {
+    const scrollContainerPosition =
+      scrollRef.current.getBoundingClientRect().top;
+    const bunHeaderPosition = bunsRef?.current.getBoundingClientRect().top;
+    const sauceHeaderPosition = saucesRef?.current.getBoundingClientRect().top;
+    const mainHeaderPosition = mainsRef?.current.getBoundingClientRect().top;
+
+    const bunsDiff = Math.abs(scrollContainerPosition - bunHeaderPosition);
+    const saucesDiff = Math.abs(scrollContainerPosition - sauceHeaderPosition);
+    const mainsDiff = Math.abs(scrollContainerPosition - mainHeaderPosition);
+
+    if (bunsDiff < saucesDiff) {
+      setCurrent("bun");
+    } else if (saucesDiff < mainsDiff) {
+      setCurrent("sauce");
+    } else {
+      setCurrent("main");
+    }
+  };
 
   return (
     <div className="col">
@@ -42,33 +70,34 @@ export default function BurgerIngredients({ items }) {
           Object.keys(ingredientTypeTitles).map((type) => (
             <Tab
               key={type}
-              onClick={setTab}
               active={current === type}
+              onClick={setTab}
               value={type}
             >
               {ingredientTypeTitles[type]}
             </Tab>
           ))}
       </div>
-      <div className={`${styles.items} customScroll`}>
-        {buns && (
-          <BurgerIngredientsSection id="bun" title="Булки" ingredients={buns} />
-        )}
-        {mains && (
-          <BurgerIngredientsSection
-            id="main"
-            title="Начинки"
-            ingredients={mains}
-          />
-        )}
-        {sauces && (
-          <BurgerIngredientsSection
-            id="sauce"
-            title="Соусы"
-            ingredients={sauces}
-          />
-        )}
+      <div
+        className={`${styles.burgerItems} customScroll`}
+        ref={scrollRef}
+        onScroll={handleScroll}
+      >
+        {typesIngredient &&
+          Object.keys(typesIngredient).map((ingredient, index) => (
+            <BurgerIngredientSection
+              id={ingredient}
+              key={ingredient}
+              title={ingredientTypeTitles[ingredient]}
+              ingredients={typesIngredient[ingredient]}
+              bunsRef={bunsRef}
+              saucesRef={saucesRef}
+              mainsRef={mainsRef}
+            />
+          ))}
       </div>
     </div>
   );
 }
+
+export default BurgerIngredients;

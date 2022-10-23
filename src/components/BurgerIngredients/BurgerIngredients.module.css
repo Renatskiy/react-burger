@@ -1,4 +1,4 @@
-.items {
+.burgerItems {
   display: flex;
   flex-wrap: wrap;
   max-height: 756px;

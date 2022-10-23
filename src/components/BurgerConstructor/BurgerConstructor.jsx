@@ -1,34 +1,58 @@
-import React, { useState, useContext, useEffect } from "react";
-import { AppContext } from "../../services/appContext";
+import React, { useState, useEffect, useCallback } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { useDrop } from "react-dnd";
+import { useActions } from "../../hooks/useActions";
 import {
   ConstructorElement,
   DragIcon,
   CurrencyIcon,
   Button,
 } from "@ya.praktikum/react-developer-burger-ui-components";
+import BurgerConstructorItem from "../BurgerConstructorItem/BurgerConstructorItem";
 import Loader from "../Icons/Loader";
 import styles from "./BurgerConstructor.module.css";
-import { fetchPost } from "../../api/index";
-export default function BurgerConstructor() {
-  const { state, dispatch } = useContext(AppContext);
-  const [loader, setLoader] = useState(false);
+import classNames from "classnames/bind";
+export default function BurgerCards({ onDropHandler }) {
+  const dispatch = useDispatch();
+  const {
+    setPrice,
+    removeIngredient,
+    sortIngredientActions,
+    getOrder,
+    setIsLoader,
+  } = useActions();
+  const { burgerConstructor, totalPrice } = useSelector(
+    (state) => state.burgerState
+  );
+  const { ingredients: ingredientsState } = useSelector(
+    (state) => state.ingredientsState
+  );
+  const { loader } = useSelector((state) => state.orderState);
   const [hasDisabled, setHasDisabled] = useState(false);
-  const { burgerConstructor, totalPrice } = state;
   const { bun, ingredients } = burgerConstructor;
   const bunItem = bun?.[0];
+
+  const [, dropIngredientCard] = useDrop({
+    accept: "ingredient-card",
+    drop(itemId) {
+      onDropHandler(itemId);
+    },
+  });
+  const [, dropIngredient] = useDrop({ accept: "ingredients-sort" });
   useEffect(() => {
     const bunPrice = bun[0]?.price * 2 || 0;
     const ingredientsPrices = ingredients?.reduce(
       (acc, val) => acc + val.price,
       0
     );
-    dispatch({ type: "setPrice", payload: bunPrice + ingredientsPrices });
+    setPrice(bunPrice + ingredientsPrices);
     if (!bunItem) {
       setHasDisabled(true);
     } else {
       setHasDisabled(false);
     }
-  }, [bun, ingredients, dispatch]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [bun, ingredients, dispatch, bunItem]);
 
   const handlerName = (name, type) => {
     if (type) {
@@ -42,47 +66,50 @@ export default function BurgerConstructor() {
   };
 
   const removeItem = (item, index) => {
-    if (item.count > 0) {
-      item.count = item.count - 1;
+    const findItem = ingredientsState.find((x) => x._id === item._id);
+    if (findItem && findItem.__v > 0) {
+      findItem.__v = findItem.__v - 1;
     }
-    dispatch({
-      type: "removeIngredient",
-      payload: index,
-    });
+    removeIngredient(index);
   };
 
   const orderAdd = async () => {
-    setLoader(true);
+    setIsLoader(true);
 
     const bunId = bunItem._id;
-    const ingredientsId = ingredients.map(x => x._id);
+    const ingredientsId = ingredients.map((x) => x._id);
     const ingredientsData = [bunId, ...ingredientsId, bunId];
-
-    await fetchPost("/orders", ingredientsData)
-      .then(response => {
-        setLoader(false);
-        const { success, order } = response;
-        if (success && order) {
-          dispatch({ type: "setOrder", payload: order?.number });
-          dispatch({
-            type: "openModal",
-            payload: { modalIsOpen: true, mode: "orderDetails" },
-          });
-          dispatch({ type: "clearIngredientsSelecteds" });
-        }
-      })
-      .catch(err => {
-        setLoader(false);
-        console.error("Не получилось оформить заказ");
-      });
+    await getOrder(ingredientsData);
   };
+
+  const findIngredient = useCallback(
+    (id) => {
+      const findItem = ingredients.find((x) => x._id === id);
+
+      return {
+        findItem,
+        index: ingredients.indexOf(findItem),
+      };
+    },
+    [ingredients]
+  );
+  const sortIngredient = useCallback(
+    (index, atIndex) => {
+      sortIngredientActions({ index, atIndex });
+    },
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [dispatch]
+  );
   return (
     <>
       <div className="col">
         <div className={styles.burgerCards}>
-          <div className={styles.BurgerConstructorsWrapper}>
+          <div
+            className={styles.BurgerConstructorsWrapper}
+            ref={dropIngredientCard}
+          >
             {bunItem && (
-              <div className={`${styles.burgerCard} pr-4` }>
+              <div className={classNames(styles.burgerCard, "pr-4")}>
                 <ConstructorElement
                   type="top"
                   isLocked={true}
@@ -93,15 +120,22 @@ export default function BurgerConstructor() {
               </div>
             )}
             <div
-              
-              className={`${styles.burgerWrapper} customScroll pr-2`}
+              ref={dropIngredient}
+              className={classNames(
+                styles.burgerWrapper,
+                "customScroll",
+                "pr-2"
+              )}
             >
               {ingredients &&
                 ingredients.map((item, index) => {
                   return (
-                    <div
-                      className={styles.burgerCard}
-                      key={`${item._id}_${index}`}
+                    <BurgerConstructorItem
+                      key={item.uuid}
+                      id={item._id}
+                      ingredientsIndex={index}
+                      findIngredient={findIngredient}
+                      sortIngredient={sortIngredient}
                     >
                       <div className={styles.burderCardIcon}>
                         <DragIcon type="primary" />
@@ -114,12 +148,12 @@ export default function BurgerConstructor() {
                         thumbnail={item.image}
                         handleClose={() => removeItem(item, index)}
                       />
-                    </div>
+                    </BurgerConstructorItem>
                   );
                 })}
             </div>
             {bunItem && (
-              <div className={`${styles.burgerCard} pr-4`}>
+              <div className={classNames(styles.burgerCard, "pr-4")}>
                 <ConstructorElement
                   type="bottom"
                   isLocked={true}
@@ -131,10 +165,12 @@ export default function BurgerConstructor() {
             )}
           </div>
         </div>
-        <div className={`${styles.burgerTotalPrice} mt-10 mr-4`}> 
-         
+        <div className={classNames(styles.burgerTotalPrice, "mt-10 mr-4")}>
           <div
-            className={`${styles.price} text text_type_digits-medium mr-10`}
+            className={classNames(
+              styles.price,
+              "text text_type_digits-medium mr-10"
+            )}
           >
             <span>{totalPrice}</span>
             <CurrencyIcon type="primary" />
@@ -145,7 +181,6 @@ export default function BurgerConstructor() {
               size="medium"
               onClick={orderAdd}
               disabled={hasDisabled}
-              htmlType="button"
             >
               {loader ? <Loader /> : "Оформить заказ"}
             </Button>
