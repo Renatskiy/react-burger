@@ -1,38 +1,44 @@
-import React, { useContext } from "react";
-import PropTypes from "prop-types";
+import React from "react";
+import { useDrag } from "react-dnd";
+import { useActions } from "../../hooks/useActions";
 import {
   Counter,
   CurrencyIcon,
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import { typeIngridient } from "../../types/types";
-import { AppContext } from "../../services/appContext";
 import styles from "./BurgerIngredient.module.css";
-import IngredientDetails from "../IngredientDetails/IngredientDetails";
-import Modal from "../Modal/Modal";
 
 BurgerIngredient.propTypes = {
   ingredient: typeIngridient.isRequired,
 };
 export default function BurgerIngredient({ ingredient }) {
-  const { dispatch } = useContext(AppContext);
-
+  const { setIngredientSelected, openModalAction } = useActions();
+  const [{ opacity }, dragIngredient] = useDrag({
+    type: "ingredient-card",
+    item: { id: ingredient._id },
+    collect: (monitor) => ({
+      opacity: monitor.isDragging() ? 0.5 : 1,
+    }),
+  });
   const openModal = () => {
-    dispatch({ type: "setIngredientSelect", payload: ingredient });
-    dispatch({
-      type: "openModal",
-      payload: { modalIsOpen: true, mode: "IngredientDetails" },
-    });
+    setIngredientSelected(ingredient);
+    openModalAction({ modalIsOpen: true, mode: "IngredientDetails" });
   };
 
   return (
     <>
-      <div className={`${styles.burger_item} mb-8`} onClick={openModal}>
+      <div
+        className={`${styles.burger_item} mb-8`}
+        onClick={openModal}
+        ref={dragIngredient}
+        styles={{ opacity }}
+      >
         <div className="pl-4 pr-4">
-          {ingredient.count > 0 && (
+          {ingredient.__v > 0 && (
             <Counter
-              count={ingredient.count}
+              count={ingredient.__v}
               size="default"
-              extraClass="burderCount"
+              className="burderCount"
             />
           )}
           <img src={ingredient.image} alt="" className="mb-1" />

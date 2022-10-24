@@ -1,10 +1,10 @@
-import { URL } from "../lib/constants";
+import { BASE_URL } from "../lib/constants";
 export const fetchRequest = async (api) => {
-    const url = `${URL}${api}`;
+    const url = `${BASE_URL}${api}`;
     return await fetch(url).then(checkResponse);
   },
   fetchPost = async (api, body) => {
-    const url = `${URL}${api}`;
+    const url = `${BASE_URL}${api}`;
     return await fetch(url, {
       method: "POST",
       mode: "cors",
