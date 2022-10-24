@@ -1,3 +1,3 @@
 export const SET_LOADER = "SET_LOADER";
-export const SUCCESS = "SUCCESS";
-export const FAILURE = "FAILURE";
+export const ORDER_SUCCESS = "ORDER_SUCCESS";
+export const ORDER_FAILURE = "ORDER_FAILURE";

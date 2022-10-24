@@ -1,5 +1,5 @@
 import { fetchPost } from "../../../api/index";
-import { SET_LOADER, SUCCESS, FAILURE } from "./types";
+import { SET_LOADER, ORDER_SUCCESS, ORDER_FAILURE } from "./types";
 import { OPENMODAL } from "../modal/types";
 import { CLEAR_INGREDIENTS_SELECTEDS } from "../ingredients/types";
 import { CLEAR_CONSTRUCTOR } from "../constructor/types";
@@ -9,7 +9,7 @@ export const OrderActionCreators = {
       .then((response) => {
         const { success, order } = response;
         if (success && order) {
-          dispatch({ type: SUCCESS, payload: order?.number });
+          dispatch({ type: ORDER_SUCCESS, payload: order?.number });
           dispatch({
             type: OPENMODAL,
             payload: { modalIsOpen: true, mode: "orderDetails" },
@@ -19,7 +19,7 @@ export const OrderActionCreators = {
         }
       })
       .catch((err) => {
-        dispatch({ type: FAILURE });
+        dispatch({ type: ORDER_FAILURE });
         console.error("Не получилось оформить заказ");
       })
       .finally(() => {
