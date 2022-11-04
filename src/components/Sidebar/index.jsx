@@ -1,5 +1,5 @@
 import React from 'react';
-import { useRouteMatch, Redirect } from 'react-router-dom';
+import { useRouteMatch, useHistory } from 'react-router-dom';
 import classNames from 'classnames';
 import styles from './index.module.css';
 import { useActions } from '../../hooks/useActions';
@@ -8,10 +8,11 @@ function Sidebar() {
   const profilePage = useRouteMatch('/profile');
   const profilePageActive = profilePage && profilePage.isExact;
 
+  const history = useHistory();
   const logout = async () => {
     const res = await logoutUser();
     if (res) {
-      window.location.replace('/login')
+      history.push('/login');
     }
   };
 

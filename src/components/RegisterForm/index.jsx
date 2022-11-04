@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import Cookies from 'js-cookie';
-import { Link, Redirect } from 'react-router-dom';
+import { Link, Redirect, useHistory } from 'react-router-dom';
 import {
   Button,
   Input,
@@ -11,6 +11,8 @@ import Loader from '../Icons/Loader';
 import { useActions } from '../../hooks/useActions';
 import styles from '../LoginForm/styles.module.css';
 function RegisterForm() {
+  const history = useHistory();
+
   const { register } = useActions();
 
   const [loader, setLoader] = useState(false);
@@ -27,7 +29,7 @@ function RegisterForm() {
     try{
       await register(form);
       setLoader(false);
-      window.location.replace('/')
+      history.push('/');
 
     }catch {
       setLoader(false);
