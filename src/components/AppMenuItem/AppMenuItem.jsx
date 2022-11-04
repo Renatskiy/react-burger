@@ -10,7 +10,7 @@ AppMenuItem.propTypes = {
 };
 function AppMenuItem({ title, Icon, onClick, isActive }) {
   return (
-    <li className={classNames(styles.headerMenuItem, "pt-4 pb-4 pl-5 pr-5")} onClick={onClick}>
+    <li className={`${styles.headerMenuItem} pt-4 pb-4 pl-5 pr-5`} onClick={onClick}>
       <div className={classNames(styles.headerMenuItemIcon, "mr-2")}>
         <Icon />
       </div>

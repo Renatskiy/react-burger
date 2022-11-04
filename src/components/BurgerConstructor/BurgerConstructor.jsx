@@ -139,7 +139,7 @@ export default function BurgerCards({ onDropHandler }) {
                 ingredients.map((item, index) => {
                   return (
                     <BurgerConstructorItem
-                      key={item.uuid}
+                      key={item._id+index}
                       id={item._id}
                       ingredientsIndex={index}
                       findIngredient={findIngredient}
@@ -150,6 +150,7 @@ export default function BurgerCards({ onDropHandler }) {
                       </div>
                       <ConstructorElement
                         type={item.position}
+                        key={item._id}
                         isLocked={item.locker}
                         text={handlerName(item.name, item.position)}
                         price={item.price}

@@ -31,7 +31,7 @@ function ProfileForm() {
   };
   const fetchUse = async () => {
     const res = await getUserInformation();
-    if (res.success) {
+    if (res?.success) {
       setForm({ ...form, name: res.user.name, email: res.user.email });
     }
   };

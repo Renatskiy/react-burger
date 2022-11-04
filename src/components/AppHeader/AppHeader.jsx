@@ -45,6 +45,7 @@ function AppHeader() {
           <div className={styles.headerLogo}>
             <Logo />
           </div>
+          <ul>
           <AppMenuItem
             title="Личный кабинет"
             Icon={ProfileIcon}
@@ -55,6 +56,7 @@ function AppHeader() {
             }}
             isActive={profilePageActive}
           />
+          </ul>
         </nav>
       </div>
     </header>

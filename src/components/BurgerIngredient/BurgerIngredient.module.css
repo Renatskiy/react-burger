@@ -1,15 +1,20 @@
-.burger_item {
+.burgerItem {
   max-width: 272px;
   position: relative;
   cursor: pointer;
 }
 
-.burger_price {
+.burderItemPrice {
   display: flex;
   align-items: center;
   justify-content: center;
 }
 
-.burger_price span {
+.burderItemPrice span {
   margin-right: 9px;
+}
+.burgerItemlink {
+  text-decoration: none;
+  color: #fff;
+  cursor: pointer;
 }

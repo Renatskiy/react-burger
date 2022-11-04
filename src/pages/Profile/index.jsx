@@ -1,9 +1,10 @@
 import React from 'react';
 import Sidebar from '../../components/Sidebar';
+import styles from './profilePage.module.css'
 function Profile({children}) {
   return (
     <div className="container">
-      <div className="lk-wrapper profile-wrapper">
+      <div className={styles.lkWrapper}>
         <Sidebar />
         {children}
       </div>

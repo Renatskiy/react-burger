@@ -29,7 +29,7 @@ export default function BurgerIngredient({ ingredient }) {
   return (
     <>
       <div
-        className={classNames(styles.burgerItem, 'mb-8')}
+        className={`${styles.burgerItem} mb-8`}
         onClick={openModal}
         ref={dragIngredient}
         styles={{ opacity }}
