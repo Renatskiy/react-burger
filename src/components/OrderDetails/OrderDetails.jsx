@@ -4,7 +4,7 @@ import PropTypes from "prop-types";
 import styles from "./orderDetails.module.css";
 import IconSuccess from "../Icons/IconSuccess";
 OrderDetails.propTypes = {
-  item: PropTypes.number.isRequired,
+  item: PropTypes.number,
 };
 function OrderDetails({ item }) {
   return (

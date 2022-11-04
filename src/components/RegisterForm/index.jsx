@@ -24,9 +24,15 @@ function RegisterForm() {
   const submitForm = async (e) => {
     e.preventDefault();
     setLoader(true);
-    const res = await register(form);
-    console.log(res);
-    setLoader(false);
+    try{
+      await register(form);
+      setLoader(false);
+      window.location.replace('/')
+
+    }catch {
+      setLoader(false);
+      alert('что то пошло не так')
+    }
   };
 
   if (Cookies.get('accessToken')) {

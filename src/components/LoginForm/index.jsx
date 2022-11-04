@@ -24,8 +24,7 @@ function LoginForm() {
   const submitForm = async (e) => {
     e.preventDefault();
     setLoader(true);
-    const res = await login(form);
-    console.log(res);
+    await login(form);
     setLoader(false);
   };
 

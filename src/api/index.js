@@ -25,7 +25,7 @@ export const fetchRequest = async (api) => {
       Accept: "application/json",
       "Content-Type": "application/json",
     };
-    if (token !== "") {
+    if (token) {
       Object.assign(headers, { authorization: token });
     }
     return await fetch(url, {

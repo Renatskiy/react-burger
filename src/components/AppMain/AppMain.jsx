@@ -49,7 +49,7 @@ function AppMain() {
         <Route exact path="/reset-password">
           <ResetPassword />
         </Route>
-        <ProtectedRoute path="/profile">
+        <ProtectedRoute exact path="/profile">
           <Profile>
             <ProfileForm />
           </Profile>

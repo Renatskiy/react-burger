@@ -4,6 +4,7 @@ import { post, get, patch } from "../../../api/index";
 export const SET_USER = "SET_USER";
 export const SET_USERAUTH = "SET_USERAUTH";
 export const SET_FORGOT_PASSWORD = "SET_FORGOT_PASSWORD";
+export let TOKEN_EXPIRES = "";
 
 export const UserActionsCreator = {
   updateToken: async () => {
@@ -23,18 +24,20 @@ export const UserActionsCreator = {
       return false;
     });
   },
-  logoutUser: async () => {
+  logoutUser: () => {
     const payload = {
       token: Cookies.get("refreshToken"),
     };
-    return await post("/auth/logout", payload).then((res) => {
-      if (res.success) {
-        Cookies.remove("accessToken");
-        Cookies.remove("refreshToken");
-        return true;
-      }
-      return false;
-    });
+    return function () {
+      return post("/auth/logout", payload).then((res) => {
+        if (res.success) {
+          Cookies.remove("accessToken");
+          Cookies.remove("refreshToken");
+          return true;
+        }
+        return false;
+      });
+    };
   },
   forgotPassword: (form) => (dispatch) => {
     return post("/password-reset", form).then((res) => {
@@ -45,7 +48,7 @@ export const UserActionsCreator = {
     });
   },
   resetPassword: (form) => (dispatch) => {
-    return post("password-reset/reset", form).then((res) => {
+    return post("/password-reset/reset", form).then((res) => {
       if (res.success) {
         return true;
       }
@@ -66,6 +69,8 @@ export const UserActionsCreator = {
     return post("/auth/login", form).then((res) => {
       if (res.success) {
         const time = new Date(new Date().getTime() + 20 * 60 * 1000);
+        TOKEN_EXPIRES = time;
+
         Cookies.set("accessToken", res.accessToken, {
           expires: time,
         });
@@ -112,7 +117,7 @@ export const UserActionsCreator = {
         }
       })
       .catch(async (error) => {
-        console.log(error, "error");
+        alert(error);
       });
   },
 };

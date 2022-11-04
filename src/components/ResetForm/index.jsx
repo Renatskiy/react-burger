@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import { Link, Redirect, useLocation, useHistory } from 'react-router-dom';
 import Cookies from 'js-cookie';
@@ -14,17 +14,29 @@ function ResetForm() {
   const history = useHistory();
   const { resetPassword } = useActions();
   const { user } = useSelector((state) => state.userState);
-  const [form, setValue] = useState({ password: '', token: '', code: '' });
-
+  const [form, setValue] = useState({ password: '', token: '' });
+  const [disabledBtn, setdisabledBtn] = useState(true);
   const onChange = (e) => {
-    setValue({ ...form, [e.target.name]: e.target.value });
+    setValue({ ...form, token: e.target.value })
   };
+  const onChangePass = (e) => {
+    setValue({ ...form, password: e.target.value});
+  }
 
+  useEffect(() => {
+    if(form.password.length && form.token.length){
+      setdisabledBtn(false)
+    }else {
+      setdisabledBtn(true)
+    }
+  }, [form])
+
+  
   const submitForm = async (e) => {
     e.preventDefault();
-    const token = Cookies.get('token');
-    if (form.code !== '') {
-      setValue({ ...form, token });
+    // const token = Cookies.get('token');
+    if (form.token) {
+      // setValue({ ...form, token });
       const res = await resetPassword(form);
       if (res) {
         history.push('/login');
@@ -59,20 +71,20 @@ function ResetForm() {
             name={'passowrd'}
             value={form.password}
             icon={'ShowIcon'}
-            onChange={onChange}
+            onChange={onChangePass}
           />
         </div>
         <div className={classNames(styles.profile_form__group, 'mb-6')}>
           <Input
             type={'text'}
             placeholder={'Введите код из письма'}
-            name={'code'}
-            value={form.code}
+            name={'token'}
+            value={form.token}
             onChange={onChange}
           />
         </div>
         <div className={classNames(styles.profile_form__group, 'mb-20')}>
-          <Button type="primary" size="medium">
+          <Button type="primary" size="medium" disabled={disabledBtn}>
             Сохранить
           </Button>
         </div>
