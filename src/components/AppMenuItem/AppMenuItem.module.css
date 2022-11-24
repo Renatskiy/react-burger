@@ -1,23 +1,18 @@
-.app_menu_item {
+.headerMenuItem {
   display: flex;
   align-items: center;
   z-index: 2;
-  color: #fff;
-  text-decoration: none;
 }
-.app_menu_item span {
+.headerMenuItem span {
   cursor: pointer;
   display: inline-block;
 }
-.app_menu_item:hover svg {
+.headerMenuItem:hover svg {
   fill: #8585ad;
 }
-.app_menu_item_icon {
+.headerMenuItemIcon {
   max-height: 24px;
 }
-.app_menu_item span:hover {
+.headerMenuItem span:hover {
   color: #8585ad;
-}
-.menu_list {
-  list-style-type: none;
 }

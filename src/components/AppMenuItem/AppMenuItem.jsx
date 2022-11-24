@@ -1,21 +1,22 @@
-import { string } from "prop-types";
-import PropTypes from "prop-types";
 import React from "react";
+import PropTypes from "prop-types";
+import classNames from "classnames/bind";
 import styles from "./AppMenuItem.module.css";
-
 AppMenuItem.propTypes = {
-  title: string.isRequired,
-  Icon: PropTypes.elementType.isRequired,
+  title: PropTypes.string.isRequired,
+  Icon: PropTypes.elementType,
+  onClick: PropTypes.func,
+    isActive: PropTypes.bool,
 };
-export default function AppMenuItem({ Icon, title }) {
+function AppMenuItem({ title, Icon, onClick, isActive }) {
   return (
-    <li className={styles.menu_list}>
-      <a href="#" className={`${styles.app_menu_item} pt-4 pb-4 pl-5 pr-5`}>
-        <div className={`${styles.app_menu_item_icon} "mr-2`}>
-          <Icon />
-        </div>
-        <span className="text text_type_main-default">{title}</span>
-      </a>
+    <li className={`${styles.headerMenuItem} pt-4 pb-4 pl-5 pr-5`} onClick={onClick}>
+      <div className={classNames(styles.headerMenuItemIcon, "mr-2")}>
+        <Icon />
+      </div>
+      <span className="text text_type_main-default">{title}</span>
     </li>
   );
 }
+
+export default AppMenuItem;
