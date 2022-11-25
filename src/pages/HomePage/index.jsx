@@ -1,11 +1,11 @@
-import React from 'react';
-import { DndProvider } from 'react-dnd';
-import { HTML5Backend } from 'react-dnd-html5-backend';
-import { useSelector } from 'react-redux';
-import { useActions } from '../../hooks/useActions';
-import Main from '../../components/Main/Main';
-import Modal from '../../components/Modal/Modal';
-import OrderDetails from '../../components/OrderDetails/OrderDetails';
+import React from "react";
+import { DndProvider } from "react-dnd";
+import { HTML5Backend } from "react-dnd-html5-backend";
+import { useSelector } from "react-redux";
+import { useActions } from "../../hooks/useActions";
+import Main from "../../components/Main/Main";
+import Modal from "../../components/Modal/Modal";
+import OrderDetails from "../../components/OrderDetails/OrderDetails";
 
 function App() {
   const { closeModalAction } = useActions();
@@ -28,7 +28,7 @@ function App() {
         )}
       </div>
       <Modal
-        show={modalIsOpen && modalMode === 'orderDetails'}
+        show={modalIsOpen && modalMode === "orderDetails"}
         onClose={() => closeModalAction()}
       >
         <OrderDetails item={orderNumber} />

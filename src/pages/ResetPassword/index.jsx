@@ -1,5 +1,5 @@
-import React from 'react';
-import ResetForm from '../../components/ResetForm';
+import React from "react";
+import ResetForm from "../../components/ResetForm";
 function ResetPassword() {
   return (
     <div>
