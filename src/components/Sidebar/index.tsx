@@ -1,11 +1,16 @@
 import React from "react";
 import styles from "./index.module.css";
+import {useHistory } from 'react-router-dom';
 import { useActions } from "../../hooks/useActions";
 function Sidebar() {
   const { logoutUser } = useActions();
+  const history = useHistory();
+
 
   const logout = async () => {
    await logoutUser();
+   
+      await history.push('/login');
   };
 
   return (

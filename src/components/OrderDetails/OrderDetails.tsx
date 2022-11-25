@@ -2,7 +2,7 @@ import React from "react";
 import styles from "./orderDetails.module.css";
 import IconSuccess from "../Icons/IconSuccess";
 interface IOrderDetails {
-  item: number;
+  item: number|null;
 }
 function OrderDetails({ item }:IOrderDetails) {
   return (

@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 
-export const useHiddenScrollBody = (show) => {
-  useEffect(() => {
+export const useHiddenScrollBody = (show: boolean) => {
+  useEffect((): any => {
     if (show) {
       document.body.style.overflow = "hidden";
     }

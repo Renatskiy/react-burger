@@ -1,17 +1,17 @@
 import React from "react";
 import { DndProvider } from "react-dnd";
 import { HTML5Backend } from "react-dnd-html5-backend";
-import { useSelector } from "react-redux";
 import { useActions } from "../../hooks/useActions";
 import Main from "../../components/Main/Main";
 import Modal from "../../components/Modal/Modal";
+import { useTypedSelector } from '../../hooks/useTypedSelector';
 import OrderDetails from "../../components/OrderDetails/OrderDetails";
 
 function App() {
   const { closeModalAction } = useActions();
-  const { error } = useSelector((store) => store.ingredientsState);
-  const { modalIsOpen, modalMode } = useSelector((store) => store.modalState);
-  const { orderNumber } = useSelector((store) => store.orderState);
+  const { error } = useTypedSelector((store) => store.ingredientsState);
+  const { modalIsOpen, modalMode } = useTypedSelector((store) => store.modalState);
+  const { orderNumber } = useTypedSelector((store) => store.orderState);
   return (
     <>
       <div className="App">

@@ -83,7 +83,7 @@ export const UserActionsCreator = {
   login:
     (form: { email: string; password: string }) =>
     (dispatch: Dispatch<UserAction>) => {
-      return post("/auth/login", form).then((res) => {
+      return post("/auth/login", form).then((res: any) => {
         if (res.success) {
           const time = new Date(new Date().getTime() + 20 * 60 * 1000);
 
