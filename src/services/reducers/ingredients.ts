@@ -5,7 +5,7 @@ import {
 } from "../actions/ingredients/types";
 
 interface IngredientS {
-  ingredients: typeIngridient[];
+  ingredients: typeIngridient[] | [];
   ingredientSelect: typeIngridient | object;
   error: boolean;
 }
@@ -27,7 +27,7 @@ export default function ingredientsReducer(
 ): IngredientS {
   switch (action.type) {
     case ActionIngredientsTypes.INGREDIENTS_FETCH:
-      return { ...state, ingredients: action.payload };
+      return { ...state, ingredients: action.payload || [] };
     case ActionIngredientsTypes.INGREDIENTS_ERROR:
       return { ...state, error: action.payload };
     case ActionIngredientsTypes.INGREDIENTS_SELECTED:

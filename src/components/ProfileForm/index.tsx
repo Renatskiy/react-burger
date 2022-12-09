@@ -1,6 +1,6 @@
-import React, { useState, useEffect, } from "react";
-import { useDispatch } from 'react-redux';
-import { useTypedSelector } from '../../hooks/useTypedSelector';
+import React, { useState, useEffect } from "react";
+import { useDispatch } from "react-redux";
+import { useTypedSelector } from "../../hooks/useTypedSelector";
 import {
   Button,
   Input,
@@ -9,9 +9,8 @@ import {
 import Loader from "../Icons/Loader";
 import styles from "./index.module.css";
 
-
-import { UserActionsCreator } from '../../services/actions/user/user-actions';
-declare module 'react' {
+import { UserActionsCreator } from "../../services/actions/user/user-actions";
+declare module "react" {
   interface FunctionComponent<P = {}> {
     (props: PropsWithChildren<P>, context?: any): ReactElement<any, any> | null;
   }
@@ -20,11 +19,11 @@ function ProfileForm() {
   const dispatch = useDispatch();
   const { user } = useTypedSelector((state) => state.userState);
   const [loader, setLoader] = useState<boolean>(false);
-  const [form, setForm] = useState<
-  {name: string,
-  email: string,
-password: string}
-  >({
+  const [form, setForm] = useState<{
+    name: string;
+    email: string;
+    password: string;
+  }>({
     name: "",
     email: "",
     password: "",
@@ -47,7 +46,7 @@ password: string}
       setForm({ ...form, name: res.user.name, email: res.user.email });
     }
   };
-  const submitForm = async (e:React.ChangeEvent<HTMLElement>) => {
+  const submitForm = async (e: React.ChangeEvent<HTMLElement>) => {
     e.preventDefault();
     setLoader(true);
     const response = await UserActionsCreator.changeUserData(form)(dispatch);
@@ -65,13 +64,13 @@ password: string}
     <div className={styles.lk_form}>
       <form>
         <div className="form_group mb-6">
-        <Input
+          <Input
             type="text"
             placeholder="Имя"
             onChange={onChange}
             onIconClick={() => setFocusName(true)}
             onBlur={() => setFocusName(false)}
-            icon={isFocusName ? 'CloseIcon' : 'EditIcon'}
+            icon={isFocusName ? "CloseIcon" : "EditIcon"}
             disabled={!isFocusName}
             value={form.name}
             name="name"
@@ -111,10 +110,10 @@ password: string}
         </div>
 
         <div className="form_group mb-6">
-        <Button type="secondary" size="medium" onClick={() => cancelClick}>
+          <Button type="secondary" size="medium" onClick={() => cancelClick}>
             Отмена
           </Button>
-          <Button type="primary" size="medium" onClick={() =>submitForm}>
+          <Button type="primary" size="medium" onClick={() => submitForm}>
             Сохранить {loader ? <Loader /> : null}
           </Button>
         </div>

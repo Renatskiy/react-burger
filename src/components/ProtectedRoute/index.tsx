@@ -1,5 +1,5 @@
 import Cookies from "js-cookie";
-import { Route, Redirect, RouteProps } from 'react-router-dom';
+import { Route, Redirect, RouteProps } from "react-router-dom";
 
 const ProtectedRoute = ({ path, exact, children }: RouteProps) => {
   const isAuth = Cookies.get("accessToken");
@@ -25,6 +25,5 @@ const ProtectedRoute = ({ path, exact, children }: RouteProps) => {
     />
   );
 };
-
 
 export default ProtectedRoute;
