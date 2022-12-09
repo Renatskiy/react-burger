@@ -10,12 +10,14 @@ const FeedPages = () => {
   const { orders, total, totalToday } = useTypedSelector(
     (store) => store.feedState
   );
-  console.log(orders, "orders");
+  console.log(orders, 'orders');
   useEffect(() => {
-    if (!orders) {
-      dispatch({ type: WS_CONNECTION_START });
-    }
-  }, [dispatch, orders]);
+    dispatch({ type: WS_CONNECTION_START });
+  }, []);
+
+  if (!orders.length) {
+    return <div className={styles.feedLoader}>Загрузка...</div>;
+  }
 
   return (
     <div className="container">

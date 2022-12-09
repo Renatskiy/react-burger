@@ -5,7 +5,9 @@ import { useActions } from "../../hooks/useActions";
 import AppHeader from "../AppHeader/AppHeader";
 import { useTypedSelector } from "../../hooks/useTypedSelector";
 import AppMain from "../AppMain/AppMain";
-import { WS_CONNECTION_START } from "../../services/actions/ws/types";
+// import { WS_CONNECTION_START } from "../../services/actions/ws/types";
+import { ActionUserTypes } from '../../services/actions/user/types';
+import Cookies from 'js-cookie';
 
 // import Cookies from 'js-cookie';
 function App() {
@@ -14,14 +16,14 @@ function App() {
   const { error } = useTypedSelector((store) => store.ingredientsState);
   const fetchData = useCallback(async () => {
     await getIngredients();
-    dispatch({ type: WS_CONNECTION_START });
+    // dispatch({ type: WS_CONNECTION_START });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [dispatch]);
   useEffect(() => {
     fetchData();
-    // if (Cookies.get('accessToken')) {
-    //   setUserAuth(true);
-    // }
+    if (Cookies.get('accessToken')) {
+      dispatch({ type: ActionUserTypes.SET_USERAUTH, payload: true });
+    }
   }, [fetchData]);
 
   return (

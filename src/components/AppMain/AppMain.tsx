@@ -13,7 +13,7 @@ import ProfileForm from "../ProfileForm";
 import Modal from "../Modal/Modal";
 import FeedPage from "../../pages/Feed";
 import { FeedDetails } from "../FeedDetails";
-import { Location } from "history";
+import { ProfileOrder } from '../ProfileOrder';
 function AppMain() {
   // const location = useLocation<{ background?: Location }>();
 
@@ -35,6 +35,10 @@ function AppMain() {
   const closeModalIgredient = () => {
     closeModalAction();
     history.push("/");
+  };
+  const closeModalFeed = () => {
+    closeModalAction();
+    history.push('/feed');
   };
   return (
     <main>
@@ -59,6 +63,11 @@ function AppMain() {
             <ProfileForm />
           </Profile>
         </ProtectedRoute>
+        <ProtectedRoute exact path="/profile/orders">
+          <Profile>
+            <ProfileOrder />
+          </Profile>
+        </ProtectedRoute>
         <Route exact path="/ingredients/:id">
           <IngredientsDetails />
         </Route>
@@ -80,7 +89,7 @@ function AppMain() {
             </Modal>
           </Route>
           <Route exact path="/feed/:id">
-            <Modal show={true} onClose={() => closeModalIgredient()}>
+          <Modal show={true} onClose={() => closeModalFeed()}>
               <FeedDetails />
             </Modal>
           </Route>
