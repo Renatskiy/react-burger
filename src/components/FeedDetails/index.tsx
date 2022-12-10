@@ -1,26 +1,35 @@
 import React, { useMemo, useEffect } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, useRouteMatch } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import cs from 'classnames';
 import styles from '../Modal/modal.module.css';
 import { useTypedSelector } from '../../hooks/useTypedSelector';
 import { CurrencyIcon } from '@ya.praktikum/react-developer-burger-ui-components';
-import { WS_CONNECTION_START } from '../../services/actions/ws/types';
+import {
+  WS_CONNECTION_START,
+  WS_USER_CONNECTION_START,
+} from '../../services/actions/ws/types';
 import formatDate  from '../../helpers/time';
 
 export const FeedDetails = () => {
   const dispatch = useDispatch();
   const { id } = useParams<{ id: string }>();
 
+  const profileOrders = useRouteMatch('/profile/orders');
+  const profileOrdersActive = profileOrders && profileOrders.isExact;
+
+  const { orders, wsConnected, wsConnectedUser } = useTypedSelector(
+    (store) => store.feedState
+  );
+
   const { modalIsOpen } = useTypedSelector((state) => state.modalState);
-  const { orders, wsConnected } = useTypedSelector((store) => store.feedState);
   const { ingredients } = useTypedSelector((state) => state.ingredientsState);
   // const order = orders.find((order) => order._id === id);
   const order = useMemo(() => {
     if (orders.length) {
       return orders.find((order) => order._id === id);
     }
-  }, [orders]);
+  }, [orders, id]);
   const findI = useMemo(() => {
     if (order) {
       return order.ingredients?.map((id: string) =>
@@ -33,7 +42,7 @@ export const FeedDetails = () => {
     if (findI && findI.length) {
       return findI.reduce((a, b) => a + b!.price, 0);
     }
-  }, [findI, ingredients, wsConnected]);
+  }, [findI]);
 
   const getStatus = (status: string): string => {
     let text = '';
@@ -55,10 +64,13 @@ export const FeedDetails = () => {
   };
 
   useEffect(() => {
-    if (!wsConnected) {
+    if (!wsConnectedUser && profileOrdersActive) {
+      dispatch({ type: WS_USER_CONNECTION_START });
+    }
+    if (!wsConnected && !profileOrdersActive) {
       dispatch({ type: WS_CONNECTION_START });
     }
-  }, []);
+  }, [dispatch, profileOrdersActive, wsConnected, wsConnectedUser]);
 
   if (!order) {
     return <div className="">Загрузка...</div>;

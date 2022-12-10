@@ -42,7 +42,7 @@ function ProfileForm() {
   };
   const fetchUse = async () => {
     const res = await UserActionsCreator.getUserInformation()(dispatch);
-    if (res?.success) {
+    if (res && res.success) {
       setForm({ ...form, name: res.user.name, email: res.user.email });
     }
   };

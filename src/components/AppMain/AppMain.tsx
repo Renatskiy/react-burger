@@ -1,6 +1,10 @@
 import React from "react";
-import { Route, Switch, useHistory, useLocation } from "react-router-dom";
-import { useActions } from "../../hooks/useActions";
+import {
+  Route,
+  Switch,
+  useHistory,
+  useLocation,
+} from 'react-router-dom';import { useActions } from "../../hooks/useActions";
 import HomePage from "../../pages/HomePage";
 import ProtectedRoute from "../ProtectedRoute";
 import ForgotPassword from "../../pages/ForgotPassword";
@@ -19,6 +23,7 @@ function AppMain() {
 
   const history = useHistory();
   const location = useLocation();
+
 
   const { state: locationState } = useLocation() as {
     state: { background?: typeof location } | null;
@@ -39,6 +44,10 @@ function AppMain() {
   const closeModalFeed = () => {
     closeModalAction();
     history.push('/feed');
+  };
+  const closeModalFeedProfile = () => {
+    closeModalAction();
+    history.push('/profile/orders');
   };
   return (
     <main>
@@ -80,6 +89,9 @@ function AppMain() {
         <Route exact path="/feed/:id">
           <FeedDetails />
         </Route>
+        <Route exact path="/profile/orders/:id">
+          <FeedDetails />
+        </Route>
       </Switch>
       {background && (
         <>
@@ -90,6 +102,11 @@ function AppMain() {
           </Route>
           <Route exact path="/feed/:id">
           <Modal show={true} onClose={() => closeModalFeed()}>
+              <FeedDetails />
+            </Modal>
+          </Route>
+          <Route exact path="/profile/orders/:id">
+            <Modal show={true} onClose={() => closeModalFeedProfile()}>
               <FeedDetails />
             </Modal>
           </Route>

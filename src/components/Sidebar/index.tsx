@@ -1,25 +1,17 @@
 import React from 'react';
-import { Link, useRouteMatch } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import classNames from 'classnames';
 import styles from './index.module.css';
 import { useActions } from '../../hooks/useActions';
 function Sidebar() {
   const { logoutUser } = useActions();
-  const profilePage = useRouteMatch('/profile');
-  const profileOrdersPage = useRouteMatch('/profile/orders');
-  const profilePageActive = profilePage && profilePage.isExact;
-  const profileOrdersPageActive =
-    profileOrdersPage && profileOrdersPage.isExact;
 
   const logout = () => {
-    const res = logoutUser();
-    if (res) {
-      console.log(res, 'logout');
-    }
+    logoutUser();
   };
 
   return (
-    <div className={classNames(styles.sidebar, 'mr-15')}>
+    <div className={classNames(styles.sidebar, 'mr-15 sidebarWrap')}>
       <nav className={styles.nav}>
         <ul className={styles.nav_list}>
           <li

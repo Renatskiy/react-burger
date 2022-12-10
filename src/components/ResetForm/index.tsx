@@ -13,9 +13,10 @@ function ResetForm() {
   const history = useHistory();
   const { resetPassword } = useActions();
   const { user } = useTypedSelector((state) => state.userState);
-  const [form, setValue] = useState<{ password: string; token: string }>({
+  const [form, setValue] = useState<{ password: string; token: string, code: string }>({
     password: "",
     token: "",
+    code: "",
   });
   const [disabledBtn, setdisabledBtn] = useState(true);
   const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {

@@ -103,3 +103,8 @@
   justify-content: center;
   right: 0;
 }
+.status {
+}
+.done {
+  color: #00cccc;
+}
