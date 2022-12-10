@@ -1,6 +1,5 @@
 import Cookies from "js-cookie";
-import { post, get, patch } from "../../../api/index";
-
+import { post, get, patch } from "../../../api";
 import { ActionUserTypes, UserAction } from "./types";
 import { Dispatch } from "redux";
 
@@ -9,7 +8,6 @@ export const UserActionsCreator = {
     const payload = {
       token: Cookies.get("refreshToken"),
     };
-
     return await post("/auth/token", payload).then((res: any) => {
       if (res.success) {
         const time = new Date(new Date().getTime() + 20 * 60 * 1000);
@@ -22,23 +20,21 @@ export const UserActionsCreator = {
       return false;
     });
   },
-  logoutUser: () => {
+  logoutUser: async () => {
     const payload = {
       token: Cookies.get("refreshToken"),
     };
-    return function () {
-      return post("/auth/logout", payload).then((res) => {
-        if (res.success) {
-          Cookies.remove("accessToken");
-          Cookies.remove("refreshToken");
-          return true;
-        }
-        return false;
-      });
-    };
+    return await post("/auth/logout", payload).then((res) => {
+      if (res.success) {
+        Cookies.remove("accessToken");
+        Cookies.remove("refreshToken");
+        return true;
+      }
+      return false;
+    });
   },
-  forgotPassword:
-    (form: { email: string }) => (dispatch: Dispatch<UserAction>) => {
+  forgotPassword: (form: { email: string }) => {
+    return async (dispatch: Dispatch<UserAction>): Promise<boolean> => {
       try {
         return post("/password-reset", form).then((res) => {
           if (res.success) {
@@ -53,13 +49,14 @@ export const UserActionsCreator = {
       } catch (e) {
         return false;
       }
-    },
-  resetPassword: (form: {
+    };
+  },
+  resetPassword: async (form: {
     password: string;
     token: string;
-    code?: string;
+    code: string;
   }): Promise<{ success: boolean }> => {
-    return post("/password-reset/reset", form).then((res) => {
+    return await post("password-reset/reset", form).then((res: any) => {
       if (res.success) {
         return { success: true };
       } else {
@@ -82,36 +79,36 @@ export const UserActionsCreator = {
     },
   login:
     (form: { email: string; password: string }) =>
-    (dispatch: Dispatch<UserAction>) => {
-      return post("/auth/login", form).then((res: any) => {
-        if (res.success) {
-          const time = new Date(new Date().getTime() + 20 * 60 * 1000);
-
+    async (dispatch: Dispatch<UserAction>) => {
+      const res = await post("/auth/login", form);
+      if (res.success) {
+        const time = new Date(new Date().getTime() + 20 * 60 * 1000);
+        if (res && res.accessToken && res.refreshToken) {
           Cookies.set("accessToken", res.accessToken, {
             expires: time,
           });
           Cookies.set("refreshToken", res.refreshToken);
-          dispatch({ type: ActionUserTypes.SET_USER, payload: res.user });
-          dispatch({ type: ActionUserTypes.SET_USERAUTH, payload: true });
-          return true;
         }
+        dispatch({ type: ActionUserTypes.SET_USER, payload: res.user });
+        dispatch({ type: ActionUserTypes.SET_USERAUTH, payload: true });
+        return true;
+      } else {
         return false;
-      });
+      }
     },
   changeUserData:
     (form: { name: string; email: string; password: string }) =>
-    async (dispatch: Dispatch<UserAction>) => {
+    async (dispatch: Dispatch<UserAction>): Promise<boolean> => {
       if (!Cookies.get("accessToken")) {
-        const resToken = await UserActionsCreator.updateToken();
-        console.log(resToken, "getUserInformation res token");
+        await UserActionsCreator.updateToken();
       }
-      return await patch("/auth/user", form).then((res: any) => {
-        if (res?.success) {
-          dispatch({ type: ActionUserTypes.SET_USER, payload: res.user });
-
-          return true;
-        }
-      });
+      const response = await patch("/auth/user", form);
+      if (response && response.success) {
+        dispatch({ type: ActionUserTypes.SET_USER, payload: response.user });
+        return true;
+      } else {
+        return false;
+      }
     },
   getUser: (): Promise<{
     success: boolean;
@@ -121,24 +118,21 @@ export const UserActionsCreator = {
       .then((response: any) => {
         return response;
       })
-      .catch((error: any) => {
+      .catch((error) => {
         return error;
       });
   },
-  getUserInformation: () => async (dispatch: Dispatch<UserAction>) => {
+  getUserInformation: (): any => async (dispatch: Dispatch<UserAction>) => {
     if (!Cookies.get("accessToken")) {
-      const resToken = await UserActionsCreator.updateToken();
-      console.log(resToken, "getUserInformation res toekn");
+      await UserActionsCreator.updateToken();
     }
-    return await UserActionsCreator.getUser()
-      .then(async (res: any) => {
-        if (res?.success) {
-          dispatch({ type: ActionUserTypes.SET_USER, payload: res.user });
-          return res;
-        }
-      })
-      .catch(async (error) => {
-        alert(error);
-      });
+    const response = await UserActionsCreator.getUser();
+    if (response.success) {
+      dispatch({ type: ActionUserTypes.SET_USER, payload: response.user });
+
+      return response;
+    } else {
+      return { success: false };
+    }
   },
 };

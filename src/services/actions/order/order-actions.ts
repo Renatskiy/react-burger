@@ -26,7 +26,7 @@ export const OrderActionCreators = {
       .catch((err) => {
         dispatch({ type: ActionOrderTypes.ORDER_FAILURE });
         dispatch({ type: ActionConstructorTypes.CLEAR_CONSTRUCTOR });
-        console.error("Не получилось оформить заказ");
+        console.error("Не получилось оформить заказ", err);
       })
       .finally(() => {
         dispatch({ type: ActionOrderTypes.SET_LOADER, payload: false });

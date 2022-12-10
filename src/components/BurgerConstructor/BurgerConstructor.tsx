@@ -74,7 +74,9 @@ export default function BurgerCards({ onDropHandler }: IBurgerCards) {
   };
 
   const removeItem = (item: typeIngridient, index: number) => {
-    const findItem = ingredientsState.find((x: typeIngridient) => x._id === item._id);
+    const findItem = ingredientsState.find(
+      (x: typeIngridient) => x._id === item._id
+    );
     if (findItem && findItem.__v > 0) {
       findItem.__v = findItem.__v - 1;
     }

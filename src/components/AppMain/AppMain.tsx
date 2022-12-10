@@ -1,6 +1,10 @@
 import React from "react";
-import { Route, Switch, useHistory, useLocation } from "react-router-dom";
-import { useActions } from "../../hooks/useActions";
+import {
+  Route,
+  Switch,
+  useHistory,
+  useLocation,
+} from 'react-router-dom';import { useActions } from "../../hooks/useActions";
 import HomePage from "../../pages/HomePage";
 import ProtectedRoute from "../ProtectedRoute";
 import ForgotPassword from "../../pages/ForgotPassword";
@@ -11,9 +15,15 @@ import ResetPassword from "../../pages/ResetPassword";
 import IngredientsDetails from "../IngredientDetails/IngredientDetails";
 import ProfileForm from "../ProfileForm";
 import Modal from "../Modal/Modal";
+import FeedPage from "../../pages/Feed";
+import { FeedDetails } from "../FeedDetails";
+import { ProfileOrder } from '../ProfileOrder';
 function AppMain() {
+  // const location = useLocation<{ background?: Location }>();
+
   const history = useHistory();
   const location = useLocation();
+
 
   const { state: locationState } = useLocation() as {
     state: { background?: typeof location } | null;
@@ -30,6 +40,14 @@ function AppMain() {
   const closeModalIgredient = () => {
     closeModalAction();
     history.push("/");
+  };
+  const closeModalFeed = () => {
+    closeModalAction();
+    history.push('/feed');
+  };
+  const closeModalFeedProfile = () => {
+    closeModalAction();
+    history.push('/profile/orders');
   };
   return (
     <main>
@@ -54,19 +72,45 @@ function AppMain() {
             <ProfileForm />
           </Profile>
         </ProtectedRoute>
+        <ProtectedRoute exact path="/profile/orders">
+          <Profile>
+            <ProfileOrder />
+          </Profile>
+        </ProtectedRoute>
         <Route exact path="/ingredients/:id">
           <IngredientsDetails />
         </Route>
         <Route exact path="/logout">
           <Profile children={undefined} />
         </Route>
+        <Route exact path="/feed">
+          <FeedPage />
+        </Route>
+        <Route exact path="/feed/:id">
+          <FeedDetails />
+        </Route>
+        <Route exact path="/profile/orders/:id">
+          <FeedDetails />
+        </Route>
       </Switch>
       {background && (
-        <Route path={"/ingredients/:id"}>
-          <Modal show={true} onClose={() => closeModalIgredient()}>
-            <IngredientsDetails />
-          </Modal>
-        </Route>
+        <>
+          <Route path={"/ingredients/:id"}>
+            <Modal show={true} onClose={() => closeModalIgredient()}>
+              <IngredientsDetails />
+            </Modal>
+          </Route>
+          <Route exact path="/feed/:id">
+          <Modal show={true} onClose={() => closeModalFeed()}>
+              <FeedDetails />
+            </Modal>
+          </Route>
+          <Route exact path="/profile/orders/:id">
+            <Modal show={true} onClose={() => closeModalFeedProfile()}>
+              <FeedDetails />
+            </Modal>
+          </Route>
+        </>
       )}
     </main>
   );

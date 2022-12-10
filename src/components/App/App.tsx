@@ -1,20 +1,28 @@
 import React, { useEffect, useCallback } from "react";
 import { BrowserRouter as Router } from "react-router-dom";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { useActions } from "../../hooks/useActions";
 import AppHeader from "../AppHeader/AppHeader";
+import { useTypedSelector } from "../../hooks/useTypedSelector";
 import AppMain from "../AppMain/AppMain";
+import { ActionUserTypes } from '../../services/actions/user/types';
+import Cookies from 'js-cookie';
+
+// import Cookies from 'js-cookie';
 function App() {
   const dispatch = useDispatch();
   const { getIngredients } = useActions();
-  const { error } = useSelector((store) => store.ingredientsState);
+  const { error } = useTypedSelector((store) => store.ingredientsState);
   const fetchData = useCallback(async () => {
     await getIngredients();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [dispatch]);
   useEffect(() => {
     fetchData();
-  }, [fetchData]);
+    if (Cookies.get('accessToken')) {
+      dispatch({ type: ActionUserTypes.SET_USERAUTH, payload: true });
+    }
+  }, [fetchData, dispatch]);
 
   return (
     <div>

@@ -2,9 +2,9 @@ import React from "react";
 import styles from "./orderDetails.module.css";
 import IconSuccess from "../Icons/IconSuccess";
 interface IOrderDetails {
-  item: number|null;
+  item: number | null;
 }
-function OrderDetails({ item }:IOrderDetails) {
+function OrderDetails({ item }: IOrderDetails) {
   return (
     <div className={styles.modalContent}>
       <div

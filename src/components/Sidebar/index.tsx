@@ -1,34 +1,56 @@
-import React from "react";
-import styles from "./index.module.css";
-import {useHistory } from 'react-router-dom';
-import { useActions } from "../../hooks/useActions";
+import React from 'react';
+import { Link } from 'react-router-dom';
+import classNames from 'classnames';
+import styles from './index.module.css';
+import { useActions } from '../../hooks/useActions';
 function Sidebar() {
   const { logoutUser } = useActions();
-  const history = useHistory();
 
-
-  const logout = async () => {
-   await logoutUser();
-   
-      await history.push('/login');
+  const logout = () => {
+    logoutUser();
   };
 
   return (
-    <div className={`${styles.sidebar} mr-15`}>
+    <div className={classNames(styles.sidebar, 'mr-15 sidebarWrap')}>
       <nav className={styles.nav}>
         <ul className={styles.nav_list}>
           <li
-            className={`${styles.nav_item} text text_type_main-medium`}
+            className={classNames(
+              styles.nav_item,
+              'text text_type_main-medium'
+            )}
           >
-            Профиль
+            <Link
+              to={{ pathname: '/profile' }}
+              className={classNames(
+                styles.nav_item,
+                'text text_type_main-medium'
+              )}
+            >
+              Профиль
+            </Link>
           </li>
           <li
-            className={`${styles.nav_item} text text_type_main-medium`}
+            className={classNames(
+              styles.nav_item,
+              'text text_type_main-medium'
+            )}
           >
-            История заказов
+            <Link
+              to="/profile/orders"
+              className={classNames(
+                styles.nav_item,
+                'text text_type_main-medium'
+              )}
+            >
+              История заказов
+            </Link>
           </li>
           <li
-            className={`${styles.nav_item} text text_type_main-medium`}
+            className={classNames(
+              styles.nav_item,
+              'text text_type_main-medium'
+            )}
             onClick={logout}
           >
             Выход

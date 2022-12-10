@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { useTypedSelector } from '../../hooks/useTypedSelector';
+import { useTypedSelector } from "../../hooks/useTypedSelector";
 import { Link, Redirect, useLocation, useHistory } from "react-router-dom";
 import {
   Button,
@@ -13,7 +13,11 @@ function ResetForm() {
   const history = useHistory();
   const { resetPassword } = useActions();
   const { user } = useTypedSelector((state) => state.userState);
-  const [form, setValue] = useState<{ password:string, token: string }>({ password: "", token: "" });
+  const [form, setValue] = useState<{ password: string; token: string, code: string }>({
+    password: "",
+    token: "",
+    code: "",
+  });
   const [disabledBtn, setdisabledBtn] = useState(true);
   const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setValue({ ...form, token: e.target.value });

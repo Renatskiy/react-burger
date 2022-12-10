@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import Cookies from "js-cookie";
 import { Link, Redirect, useHistory } from "react-router-dom";
-import { useDispatch } from 'react-redux';
+import { useDispatch } from "react-redux";
 import {
   Button,
   Input,
@@ -9,11 +9,10 @@ import {
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import classNames from "classnames";
 import Loader from "../Icons/Loader";
-import { UserActionsCreator } from '../../services/actions/user/user-actions';
+import { UserActionsCreator } from "../../services/actions/user/user-actions";
 import styles from "../LoginForm/styles.module.css";
 
-
-declare module 'react' {
+declare module "react" {
   interface FunctionComponent<P = {}> {
     (props: PropsWithChildren<P>, context?: any): ReactElement<any, any> | null;
   }
@@ -25,9 +24,11 @@ function RegisterForm() {
 
   const [loader, setLoader] = useState<boolean>(false);
 
-  const [form, setValue] = useState<
-  { name: string,email: string, password: string }
-  >({ name: "", email: "", password: "" });
+  const [form, setValue] = useState<{
+    name: string;
+    email: string;
+    password: string;
+  }>({ name: "", email: "", password: "" });
 
   const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setValue({ ...form, [e.target.name]: e.target.value });
